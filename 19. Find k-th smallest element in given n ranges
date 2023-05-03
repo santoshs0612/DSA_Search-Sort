@@ -1,0 +1,71 @@
+Given an integer N consisting of ranges of the form [p, q] which denotes the integer in the range [p, p + 1, p + 2,...q].  Given another integer Q denoting the number of queries. The task is to return the kth smallest element for each query (assume k>1) after combining all the ranges.
+In case the kth smallest element doesn't exist -1. 
+
+Example 1:
+
+Input:
+range[] = {{1, 4}, {6, 8}}
+queries[] = {2, 6, 10}
+Output: 2 7 -1
+Explanation: After combining the given ranges, 
+the numbers become 1 2 3 4 6 7 8. As here 2nd 
+element is 2, so we print 2. As 6th element is 
+7, so we print 7 and as 10th element doesn't exist, so we
+print -1.
+Example 2:
+
+Input:
+range[] = {{2, 6}, {5, 7}} 
+queries[] = {5, 8}
+Output: 6 -1
+
+//User function Template for C++
+
+class Solution{
+    public:
+    vector<int>kthSmallestNum(vector<vector<int>>&range, vector<int>q){
+        //Write your code here
+        
+        vector<int> merarr;
+        vector<int> ans;
+        int n= range.size();
+        // set for storing the unique element 
+        set<int> s;
+        // extracting the element ans storing into set
+        for(int i=0;i<n;i++)
+        {
+            for(int j=range[i][0];j<=range[i][1];j++)
+            {
+                s.insert(j);
+            }
+            
+        }
+        // storing the element int vector from set 
+        for(auto i:s)
+        {
+            merarr.push_back(i);
+        }
+        
+        // sort the vector 
+        sort(merarr.begin(),merarr.end());
+        
+        int mersize= merarr.size();
+        
+        //cout<<mersize<<" ";
+        // running the queary 
+        for(int i=0;i<q.size();i++)
+        {
+            if(q[i]>mersize)
+            {
+                ans.push_back(-1);
+            }
+            else
+            {
+                ans.push_back(merarr[q[i]-1]);
+            }
+            
+        }
+        return ans;
+        
+    } 
+};
