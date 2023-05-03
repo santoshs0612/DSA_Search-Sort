@@ -1,0 +1,109 @@
+Given a sorted and rotated array A of N distinct elements which is rotated at some point, and given an element key. The task is to find the index of the given element key in the array A. The whole array A is given as the range to search.
+
+Example 1:
+
+Input:
+N = 9
+A[] = {5, 6, 7, 8, 9, 10, 1, 2, 3}
+key = 10
+l = 0 , h = 8
+Output:
+5
+Explanation: 10 is found at index 5.
+Example 2:
+
+Input:
+N = 4
+A[] = {3, 5, 1, 2}
+key = 6
+l = 0 , h = 3
+Output:
+-1
+Explanation: There is no element that has value 6.
+
+class Solution{
+    public:
+    // getting index of smallest element 
+    int BS_S_index(int A[],int left,int right)
+    {
+        int mid{0},prev{0},next{0},n{right+1};
+        while(left<=right)
+        {
+            
+            if(A[left]<=A[right])
+            {
+                return left;
+            }
+            mid= left+(right-left)/2;
+            prev= (mid+n-1)%n;
+            next= (mid+1)%n;
+            // base case to find the minimum element 
+            if((A[mid]<=A[prev]) && A[mid]<=A[next])
+            {
+                return mid;
+            }
+            // checking the unsorted left side 
+            else if(A[left]<=A[mid])
+            {
+                left=mid+1;
+            }
+            //checking the unsorted right side  
+            else if(A[right]>=A[mid])
+            {
+                right=mid-1;
+            }
+        }
+        return -1;
+    }
+    int binarySearch(int A[],int key,int low,int high)
+    {
+        while(low<=high)
+        {
+            int mid= low+(high-low)/2;
+            
+            if(A[mid]==key)
+            {
+                return mid;
+            }
+            else if(A[mid]>=key)
+            {
+                high=mid-1;
+            }
+            else if(A[mid]<key)
+            {
+                low= mid+1;
+            }
+        }
+        return -1;
+    }
+    int search(int A[], int l, int h, int key){
+        // l: The starting index
+        // h: The ending index, you have to search the key in this range
+        
+        //complete the function here
+        // finding out the minimum element index 
+        int min_ind=BS_S_index(A,l,h);
+        
+        // find index 
+        //cout<<min_ind<<" ";
+        // applying the BS in left and right half 
+        int lefthalf = binarySearch(A,key,0,min_ind-1);
+        int righthalf= binarySearch(A,key,min_ind,h);
+        
+        if(lefthalf!=-1)
+        {
+            return lefthalf;
+        }
+        else if(righthalf!=-1)
+        {
+            return righthalf;
+        }
+        else if(righthalf==-1 && lefthalf==-1)
+        {
+            return -1;
+        }
+        
+        
+        
+    }
+};
