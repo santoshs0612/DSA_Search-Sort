@@ -1,0 +1,110 @@
+You are given an array consisting of n integers which denote the position of a stall. You are also given an integer k which denotes the number of aggressive cows. You are given the task of assigning stalls to k cows such that the minimum distance between any two of them is the maximum possible.
+The first line of input contains two space-separated integers n and k.
+The second line contains n space-separated integers denoting the position of the stalls.
+
+Example 1:
+
+Input:
+n=5 
+k=3
+stalls = [1 2 4 8 9]
+Output:
+3
+Explanation:
+The first cow can be placed at stalls[0], 
+the second cow can be placed at stalls[2] and 
+the third cow can be placed at stalls[3]. 
+The minimum distance between cows, in this case, is 3, 
+which also is the largest among all possible ways.
+Example 2:
+
+Input:
+n=5 
+k=3
+stalls = [10 1 2 7 5]
+Output:
+4
+Explanation:
+The first cow can be placed at stalls[0],
+the second cow can be placed at stalls[1] and
+the third cow can be placed at stalls[4].
+The minimum distance between cows, in this case, is 4,
+which also is the largest among all possible ways.
+
+// User function Template for C++
+
+class Solution {
+public:
+
+    int solve(int n, int k, vector<int> &stalls) {
+    
+        // Write your code here
+        
+        // O(N2)+) O(1)
+         
+        // // sort the stall
+        // sort(stalls.begin(), stalls.end());
+        
+        // int misDis=0;
+        // int lastpos,i=0,j=0;
+        // for(i=1;i<=stalls[n-1];i++)
+        // {
+        //     int cow=k;
+        //     cow--;
+        //     lastpos=0;
+        //     for(j=1;j<n;j++)
+        //     {
+        //         if(stalls[j]-stalls[lastpos]>=i)
+        //         {
+        //             cow--;
+        //             lastpos=j;
+        //         }
+        //         if(cow==0)
+        //         {
+        //             misDis=i;
+        //             break;
+        //         }
+                
+        //     }
+
+        // }
+        // return misDis;
+        
+        // O(nlog(n))+O(1)
+        
+        // sort the stalls
+        sort(stalls.begin(),stalls.end());
+        
+        int low =0;
+        int high=stalls[n-1]-low;
+        int minDis=0;
+        while(low<=high)
+        {
+            int mid= low+(high-low)/2;
+            
+            int cow=k;
+            cow--;
+            int lastpos=0;
+            for(int j=1;j<n;j++)
+            {
+                if(stalls[j]-stalls[lastpos]>=mid)
+                {
+                    cow--;
+                    lastpos=j;
+                }
+            }
+            if(cow<=0)
+            {
+                minDis=mid;
+                low= mid+1;
+            }
+            else if(cow>0)
+            {
+                high=mid-1;
+            }
+        }
+        
+        
+        return minDis;
+    }
+};
